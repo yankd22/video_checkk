@@ -1,11 +1,34 @@
 
-| 库名称                          | 主要检测内容                  | 是否使用 AI 模型                | 模型开源性           | 使用语言 / 技术栈                | 部署/使用方式                  | 典型特性                               |
-| ---------------------------- | ----------------------- | ------------------------- | --------------- | ------------------------- | ------------------------ | ---------------------------------- |
-| **nsfw-detection (amshrbo)** | 裸体（NudeNet）、暴力、毒品、自然场景  | 是（NudeNet + MobileNet 微调） | 模型开源，但训练数据有限    | Python、Keras、Flask        | 提供 Flask API，支持批量图像检测    | 准确率 >90%，支持多类别，API 化，GPL-3.0       |
-| **SafeVision**               | 裸体（图像、视频、直播、摄像头）        | 是（ONNX 深度学习模型）            | 模型随仓库提供，可本地运行   | Python、ONNX Runtime       | CLI、GUI、REST API、实时流媒体处理 | 功能全面，支持桌面 GUI，隐私友好，本地推理，Apache-2.0 |
-| **ifnude**                   | 裸体部位（胸部、臀部、性器官），支持照片+绘画 | 是（基于 NudeNet 模型）          | 模型随库分发，MIT 协议   | Python                    | pip 包，本地函数调用             | 简洁轻量，直接返回边界框 + 置信度，支持打码            |
-| **HaramBlur**                | 网页图像/视频中的裸体、NSFW 内容     | 是（nsfwjs + Human 库）       | 使用开源 NSFWJS 模型  | JavaScript/HTML，浏览器扩展     | Chrome、Firefox、Safari 扩展 | 实时模糊，悬停可解码，隐私保护（本地推理），AGPL-3.0     |
-| **NSFW Filter**              | 网页图像中的色情/NSFW 内容        | 是（NSFWJS 模型，TF.js）        | NSFWJS 开源 (MIT) | TypeScript、TensorFlow\.js | 浏览器扩展（Chrome、Firefox）    | 本地运行，不上传数据，自动屏蔽 NSFW 图像，GPL-3.0    |
+---
+
+## 五个库特性对比表（扩展版）
+
+| 库名称                          | 主要检测内容                  | 是否使用 AI 模型                | 模型开源性      | 使用语言 / 技术栈                | 部署/使用方式                  | 是否提供检测框 | 检测方式          | 模型规模与推理时间                    | 典型特性                   |
+| ---------------------------- | ----------------------- | ------------------------- | ---------- | ------------------------- | ------------------------ | ------- | ------------- | ---------------------------- | ---------------------- |
+| **nsfw-detection (amshrbo)** | 裸体（NudeNet）、暴力、毒品、自然场景  | 是（NudeNet + MobileNet 微调） | 模型开源，但数据有限 | Python、Keras、Flask        | Flask API，批量检测           | ❌ 不提供框  | 整体分类          | 模型较轻（MobileNet），推理快，适合实时 API | 准确率 >90%，支持多类别，GPL-3.0 |
+| **SafeVision**               | 裸体（图像、视频、流媒体）           | 是（ONNX 模型）                | 模型随仓库提供    | Python、ONNX Runtime       | CLI、GUI、REST API、实时流媒体   | ✅ 提供检测框 | 框定并可模糊局部      | 模型中等（ONNX 格式，需显存），实时性能良好     | 功能全面，支持视频/GUI，本地推理     |
+| **ifnude**                   | 裸体部位（胸部、臀部、性器官），支持照片+绘画 | 是（基于 NudeNet）             | 模型随库分发，MIT | Python                    | pip 包，本地函数调用             | ✅ 提供框   | 框定部位          | 模型中等（约 139MB），CPU 可跑，推理较快    | 简洁轻量，支持打码，易集成          |
+| **HaramBlur**                | 网页图像/视频中的 NSFW 内容       | 是（nsfwjs + Human）         | 使用开源模型     | JavaScript/HTML，浏览器扩展     | Chrome、Firefox、Safari 扩展 | ❌ 不提供框  | 整体分类（是否 NSFW） | 模型轻量（TF.js，适配浏览器），实时推理       | 实时模糊，悬停解码，本地隐私         |
+| **NSFW Filter**              | 网页图像中的 NSFW 内容          | 是（NSFWJS，TF.js）           | 模型开源 (MIT) | TypeScript、TensorFlow\.js | 浏览器扩展（Chrome、Firefox）    | ❌ 不提供框  | 整体分类          | 模型轻量（几 MB），浏览器内推理快           | 本地运行，自动屏蔽，GPL-3.0      |
+
+---
+
+### 总结
+
+* **检测框支持**：
+
+  * `ifnude`、`SafeVision` → **支持输出检测框**，可对敏感部位进行局部打码。
+  * `nsfw-detection`、`HaramBlur`、`NSFW Filter` → **只给整体结果**（是否 NSFW/暴力/毒品），不提供框。
+
+* **模型规模与推理速度**：
+
+  * **最轻量**：HaramBlur、NSFW Filter（适合浏览器实时运行）。
+  * **中等**：ifnude、SafeVision（Python，模型百 MB 级，CPU/GPU 可跑）。
+  * **轻量+快**：nsfw-detection（MobileNet，整体判别，推理极快）。
+
+---
+
+要不要我把这张表格导出成 **Word 文件（docx）**，方便你后续写文档或汇报时直接使用？
 
 
 
